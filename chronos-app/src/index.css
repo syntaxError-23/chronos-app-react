@@ -5,9 +5,9 @@
 }
 
   /* hide scrollbar from chrome */
-  div#landing-container ::-webkit-scrollbar {
+div#landing-container ::-webkit-scrollbar {
     display: none;
-  }
+}
 
 .link-btn-wrapper{
   display: flex;
@@ -17,4 +17,5 @@
 a{
   text-decoration: none;
   color: white;
+  display: block;
 }
