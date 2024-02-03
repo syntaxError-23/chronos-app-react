@@ -1,16 +1,24 @@
-/* ******************** Schedule area styles ******************** */
+/* ******************** Schedule content styles ******************** */
+div#schedule-content{
+    display: flex;
+    justify-content: center;
+}
+
+
+
+
+/* ******************** Schedule table styles ******************** */
+
 div#schedule-container{
     background-color: rgba(255, 255, 255, 0.5);
     height: 70vh;
     width: 60vw;
     margin: 0 auto;
-    border-radius: 4px;
     box-shadow: 0px 0px 15px -2px rgba(0,0,0,0.75);
+    border-radius: 6px;
     overflow-y: scroll;
-
 }
 
-/* ******************** table styles ******************** */
 table{
     table-layout: fixed;
     width: 100%;
@@ -21,6 +29,8 @@ tbody tr{
 
 thead{
     height: 5vh;
+    position: sticky;
+    top: 0;
 }
 
 td, th{
@@ -41,11 +51,12 @@ tr:nth-child(24n) td{
 }
 
 #time{
-    border-bottom: solid rgb(228, 228, 228) 1px;
     border-right: solid rgb(228, 228, 228) 1px;
 }
 #time, #task {
-    background-color: rgba(116, 102, 135, 0.7);
+    background-color: rgb(195, 171, 227);
+    border-bottom: solid rgb(228, 228, 228) 1px;
+
 }
 
 .time-block{
@@ -56,4 +67,121 @@ tr:nth-child(24n) td{
 .task-block{
     background-color: rgba(212, 192, 231, 0.7) !important;
 }
+
+/* ******************** new task modal styles ******************** */
+
+div#new-task-container{
+    width: 30vw;
+    height: 70vh;
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 4px;
+    box-shadow: 0px 0px 15px -2px rgba(0,0,0,0.75);
+    margin: 0 auto;
+    overflow: auto;
+}
+
+p#new-task-text{
+    font-weight: 700;
+}
+
+.schedule-input-label{
+    margin-right: 10px;
+}
+
+div.schedule-dropdowns{
+    display: flex;
+    flex-direction: column;
+}
+
+div.new-task-div input:focus{
+    box-shadow: 0 0 3px 0.25rem rgba(174, 86, 246, 0.25);
+}
+
+div#new-task-form{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+div.dropdown-container{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+div.dropdown-container select{
+    font-weight: 600;
+}
+
+
+
+/* *************** Colour picker styles *************** */
+
+div#colour-picker-container{
+    height: 35%;
+}
+
+div#colour-picker{
+    height: 90%;
+}
+
+p#colour-picker-title{
+    font-weight: 700;
+}
+
+div.cp-row{
+    height: 50%;
+    display: flex;
+    justify-content: center;
+}
+
+
+
+div.colour-container{
+    width: 25%;
+    border: 0 solid rgb(199, 239, 255);
+    transition: all 0.1s ease-in;
+}
+
+div.colour-container:hover{
+    border: 1px solid rgb(199, 239, 255);
+
+}
+
+/* *************** Row 1*************** */
+
+
+div.cp-row:nth-child(1) .colour-container:nth-child(1){
+    background-color: #57d3ac;
+}
+div.cp-row:nth-child(1) .colour-container:nth-child(2){
+    background-color: #58d7d8;
+}
+
+div.cp-row:nth-child(1) .colour-container:nth-child(3){
+    background-color: #8da0cb;
+}
+
+div.cp-row:nth-child(1) .colour-container:nth-child(4){
+    background-color: #5461d8;
+}
+
+/* *************** Row 2 *************** */
+
+div.cp-row:nth-child(2) .colour-container:nth-child(1){
+    background-color: #6024c1;
+}
+div.cp-row:nth-child(2) .colour-container:nth-child(2){
+    background-color: #e7af46;
+}
+
+div.cp-row:nth-child(2) .colour-container:nth-child(3){
+    background-color: #c48255;
+}
+
+div.cp-row:nth-child(2) .colour-container:nth-child(4){
+    background-color: #b33c3c;
+}
+
+
 

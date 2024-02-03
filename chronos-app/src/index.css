@@ -2,6 +2,8 @@
 *{
   font-family: 'Montserrat', Calibri, 'Trebuchet MS', sans-serif;
   font-weight: 600;
+  color: black;
+  box-sizing: border-box;
 }
 
   /* hide scrollbar from chrome */
@@ -18,4 +20,53 @@ a{
   text-decoration: none;
   color: white;
   display: block;
+}
+
+/* *************** Button styles *************** */
+
+button{
+  background-color: rgb(115, 0, 209);
+  color:aliceblue;
+  border-radius: 4px;
+  outline: none;
+  border: none;
+  padding: 8px 12px;
+  transition: background-color 0.2s ease-out;
+}
+
+button:hover{
+  background-color: rgb(123, 39, 233);
+}
+
+
+
+/* *************** Form styles *************** */
+
+
+label{
+  font-weight: 700;
+}
+
+input{
+  background-color: rgb(39, 39, 39);
+  border: none;
+  color: white;
+}
+
+
+input::placeholder{
+  color: rgb(171, 171, 171);
+  font-size: 0.7em;
+}
+
+input:focus{
+  background-color: rgb(39, 39, 39);
+  color: aliceblue;
+  box-shadow: 0 0 3px 0.25rem rgba(230, 201, 254, 0.25);
+}
+
+input.form-control:focus{
+  background-color: rgb(39, 39, 39);
+  color: aliceblue;
+  box-shadow: 0 0 3px 0.25rem rgba(230, 201, 254, 0.25);
 }

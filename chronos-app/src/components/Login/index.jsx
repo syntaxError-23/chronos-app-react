@@ -7,8 +7,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 function Login(){
     
     console.log('Hello');
-    
-    
     return ( 
     <>
         <div id="login-area" className="p-4 mb-5">
