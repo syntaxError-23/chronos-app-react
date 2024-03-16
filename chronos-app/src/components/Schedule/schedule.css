@@ -68,6 +68,11 @@ tr:nth-child(24n) td{
     background-color: rgba(212, 192, 231, 0.7) !important;
 }
 
+div#task-block-div{
+    background-color: black;
+    width: 100%;
+}
+
 /* ******************** new task modal styles ******************** */
 
 div#new-task-container{
@@ -140,7 +145,7 @@ div.cp-row{
 div.colour-container{
     width: 25%;
     border: 0 solid rgb(199, 239, 255);
-    transition: all 0.1s ease-in;
+    transition: all 0.05s ease-in;
 }
 
 div.colour-container:hover{
@@ -185,3 +190,23 @@ div.cp-row:nth-child(2) .colour-container:nth-child(4){
 
 
 
+
+
+
+
+
+div.task-item{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0;
+    align-items: center;
+    background-color: #a4adfc;
+    margin: 3px auto;
+    min-height: 5vh;
+    width: 50%;
+}
+
+div.task-item p{ 
+    margin: 0;
+}

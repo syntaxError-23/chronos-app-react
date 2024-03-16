@@ -11,14 +11,6 @@ function Landing({children}){
 
     let timeRightNow = dayjs().format('HH:mm:ss');
 
-    // const [time, setTime] = useState(timeRightNow)
-
-    // const updateTime = () => {
-    //     setTime(timeRightNow);
-    // }
-
-    // setInterval(updateTime, 500);
-
     let suffix = '';
 
     const dateToday1 = dayjs().format('dddd D');

@@ -14,6 +14,7 @@ function LandingPage() {
                     <Link to='login'><button className="link-btn mx-1">Login</button></Link>
                     <Link to='/signup'><button className="link-btn mx-1">Sign Up</button></Link>
                     <Link to='/schedule'><button className="link-btn mx-1">Schedule</button></Link>
+                    <Link to='/test'><button className="link-btn mx-1">Test</button></Link>
                 </div>
             </Landing>
         </>

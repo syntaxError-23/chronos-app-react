@@ -4,6 +4,7 @@ import SignupPage from './pages/signupPage'
 import LandingPage from './pages/LandingPage'
 import LoginPage from './pages/loginPage';
 import SchedulePage from './pages/SchedulePage'
+import TestPage from './pages/TestPage';
 import './pages/loginPage'
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
               <Route path="/login" component={LoginPage}/>
               <Route path="/signup" component={SignupPage} />
               <Route path="/schedule" component={SchedulePage} />
+              <Route path="/test" component={TestPage} />              
           </Switch>
         </Router>
     </>
