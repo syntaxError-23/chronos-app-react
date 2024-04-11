@@ -18,7 +18,10 @@ function Test(){
 
         <div className="grid-parent">
             {hourArray.map((hour, index) => {
-                <div className="time-square" id={index}>{hour}</div>
+                 console.log(`Hour: ${hour}`);
+                 console.log(`index: ${index}`);
+                 
+                 return (index%2 === 0 ?  (<div className="time-square" key={index}>{hour}</div>) : <div className="task-square" key={index}>A thing to be done</div>)
             })}
         </div>
         </>

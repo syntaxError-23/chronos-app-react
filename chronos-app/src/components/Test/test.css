@@ -7,3 +7,7 @@
     height: 50vh;
     margin: 0 auto;
 }
+
+.grid-parent .time-square{
+    border: 1px solid black;
+}
