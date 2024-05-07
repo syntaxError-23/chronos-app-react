@@ -1,11 +1,39 @@
 import { useEffect, useState } from "react";
 import './schedule.css';
 
+
+    /* *************** Create Task Class  *************** */ 
+
+    class Task {
+        constructor(desc, start, end, colour){
+            this.desc = desc;
+            this.start = start;
+            this.end = end;
+            this.colour = colour;
+        }
+
+        setProperties(){
+            this.startHour = this.start.slice(0,2);
+            this.startMin = this.start.slice(3);
+            this.endHour = this.end.slice(0,2);
+            this.endMin = this.end.slice(3);
+        }
+
+        calcTimeDiff() {
+            let hourDiff = parseInt(this.endHour) - parseInt(this.startHour);
+            console.log(`${hourDiff} hours`);
+            let minDiff = parseInt(this.endMin) - parseInt(this.startMin);
+            console.log(`${minDiff} mins`);
+        }
+    }
+
+
 function Schedule() {
     const [inputValue, setInputValue] = useState('');
     const [selectStartValue, setSelectStartValue] = useState('');
     const [selectEndValue, setSelectEndValue] = useState('');
     const [tasks, setTasks] = useState([]);
+    const [previousTasks, setPreviousTasks] = useState([]);
 
     /* *************** Creates arrays of units of time to be used as time slots *************** */ 
 
@@ -40,37 +68,6 @@ function Schedule() {
         });
       });
 
-    /* *************** Create object on button press (add button in new task modal) *************** */ 
-    
-    class Task {
-        constructor(desc, start, end, colour){
-            this.desc = desc;
-            this.start = start;
-            this.end = end;
-            this.colour = colour;
-        }
-    }
-
-    Task.prototype.calcTimeDiff = function() {
-        console.log('----------------------------');
-            console.log('Time diff function');
-            console.log('----------------------------');
-            let startHour = this.start.slice(0,2);
-            let startMin = this.start.slice(3);
-            let endHour = this.end.slice(0,2);
-            let endMin = this.end.slice(3);
-    
-            let hourDiff = parseInt(endHour) - parseInt(startHour);
-            console.log(`${hourDiff} hours`);
-            let minDiff = parseInt(endMin) - parseInt(startMin);
-            console.log(`${minDiff} mins`);
-    }
-
-    const testTask = new Task('A thing to be done', '00:00', '01:00', 'red')
-
-
-
-    let tasksArr = [testTask];
     const handleInputChange = (event) => {
         setInputValue(event.target.value);
         };
@@ -83,16 +80,31 @@ function Schedule() {
         setSelectEndValue(event.target.value);
     }
     
+
     const handleClick = () => {
-        let currentTask = new Task(inputValue, selectStartValue, selectEndValue, 'red');
-        tasksArr.push(currentTask);
-        setTasks(tasksArr)
+        const currentTask = new Task(inputValue, selectStartValue, selectEndValue, 'red');
+        currentTask.setProperties();
+    
+        setTasks(prevTasks => [...prevTasks, currentTask]);
+        setPreviousTasks(tasks);
+
+        // Clear input values
         setInputValue('');
         setSelectEndValue('');
         setSelectStartValue('');
-        console.log(currentTask);
-        console.log(tasksArr)
-        currentTask.calcTimeDiff();
+
+        console.log(`currentTask ${currentTask}`);
+        console.log(tasks);
+
+    };
+
+    /* *************** JS imported from test *************** */ 
+        
+    let hourArray = [];
+
+    for(let i=0; i<24; i++){
+
+        i<10 ? hourArray.push(`0${i}:00`) : hourArray.push(`${i}:00`);
     }
 
 
@@ -157,56 +169,80 @@ function Schedule() {
                         </div>
                     </div>
                     
-
                     <div className="btn-wrapper py-3" id="new-task-btn-wrapper">
                         <button onClick={handleClick} id="new-task-btn" >Add</button>
                     </div>
-                    
+
                 </div>
                 
                 {/* *************** Schedule section *************** */}
 
-                <div id="schedule-container">
-                    <table className="">
-                        <thead>
-                            <tr>
-                                <th id="time" className="text-center">Time</th>
-                                <th id='task' className="text-center">Task</th>
-                            </tr>
-                        </thead>
-                        <tbody className="">
+                <div className="grid-parent">
+            
+                    {hourArray.map((hour, index) => (
+                        <div className="time-square"  key={index} id={`time-${index}`} style={{ gridColumn: 1 }}>{hour}</div>
+                    ))}
+
+                    {/* {hourArray.map((content, index) => (
+
+                            <div className="task-square" key={index} id={`task-${index}`} 
+                            style={{ gridColumn: 2, gridRow: index + 1 }}></div>
+
+                    ))} */}
+
+                    {tasks.map((task, index) => {
+
+                        let taskRowSpan = 0; //Variable to determine grid row span
+                        let totalMins = 0; //Variable that stores total minutes for each task
+                        let taskCol = 2;
+
+
+                        // tasks.forEach(previousTask => {
+                        //     if(parseInt(previousTask.start.split(':')[0]) === taskStartHour &&  parseInt(previousTask.end.split(':'))[0] === taskEndHour && taskEndHour ==! 0 && parseInt(previousTask.end.split(':'))[0] ==! 0 ) {
+                        //         taskCol++;
+                        //     }
+                        // })
+
+                        console.log(tasks);
+
+                        //calculates differences in start and end hours/mins
+                        const taskHourDiff = task.endHour - task.startHour;
+                        const taskMinDiff = task.endMin - task.startMin;
+
+                        //calculates total minutes 
+                        totalMins = (taskHourDiff * 60) + taskMinDiff;
+                        console.log(`TOTAL MINS: ${totalMins}`);
+
+                        taskRowSpan = taskHourDiff;
+
+                        if((taskHourDiff === 1 && (totalMins + taskStartMin > 60)) || (taskHourDiff < 1 && taskEndMin > taskStartMin)){
+                            taskRowSpan++;
+                        }
+
+                        // Calculate the duration of the task in minutes
+                        const taskDuration = (taskEndHour * 60 + taskEndMin) - (taskStartHour * 60 + taskStartMin);
+
+                        // Calculate the start and end columns for the task
+                        const startCol = taskStartHour * 2 + (taskStartMin >= 30 ? 1 : 0) + 1;
+                        const endCol = startCol + Math.ceil(taskDuration / 30);
+
+                        //if a new task occupies the same column as another task add a new col
+
+
+
+                        return (
+                            <div className="task" key={index} 
+                            style={{gridColumn: taskCol, 
+                            gridRow: `${taskStartHour + 1}/span ${taskRowSpan}`,
+                            zIndex: 2}}> 
+                                <p className="task-desc">{task.desc}</p> 
+                                <p className="task-time">{task.start} - {task.end}</p>
+                            </div>
+                        )
                         
-                            {
-                            hoursArr.map((hour) => (
-                                <tr key={hour} className="schedule-row">
-                                    <td className="time-block text-center">{hour}:00</td>
-                                    <td className="task-block text-center">
-                                                        {/* Render tasks for this hour */}
-                                        {tasks.map((task, index) => {
-                                            const taskStartHour = parseInt(task.start.split(':')[0]);
-                                            const taskEndMin = parseInt(task.end.split(':')[1])
-                                            const taskEndHour = parseInt(task.end.split(':')[0]);
-                                            if (taskStartHour <= hour && taskEndHour >= hour) {
-                                                if (taskEndHour === hour && taskEndMin === 0){
-                                                    return null
-                                                }
+                            
+                    })}
 
-                                                return (
-                                                    <div key={index} className="task-item">
-                                                        <p>{task.desc} ({task.start} - {task.end})</p> 
-                                                    </div>
-                                                );
-                                            }
-                                            return null;
-                                        })}
-
-                                    
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-
-                    </table>
                 </div>
             </div>
             
