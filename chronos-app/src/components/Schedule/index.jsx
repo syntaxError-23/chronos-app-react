@@ -86,7 +86,7 @@ function Schedule() {
     }
 
     const handleTaskBg = event => {
-        setTaskBg(event.target.style.backgroundColor);
+        setTaskBg(event.target.dataset.color);
     }
     
 
@@ -128,13 +128,13 @@ function Schedule() {
 
     };
 
-    useEffect(event => {
+    useEffect(() => {
         console.log(tasks)
         console.log(`taskBg: ${taskBg}`);
     }, [tasks])
 
 
-
+ 
     /* *************** JS imported from test *************** */ 
         
     let hourArray = [];
@@ -148,15 +148,6 @@ function Schedule() {
     /* *************** Returned JSX *************** */ 
     return(
         <>
-
-            <div id="error-wrapper" style={{ display: errDisplay }}>
-                <div id="error-msg">
-                    <span id="error-close" onClick={() => setErrDisplay('none')}>X</span>
-                    <p id="error-text">This task clashes with a pre-existing task. Please choose a different time for your task</p>
-                </div>
-            </div>
-
-
         {/* *************** New task modal container *************** */}
 
             <div id="schedule-content">
@@ -196,26 +187,24 @@ function Schedule() {
                     <div id="colour-picker-container" className="my-4">
                         
                         <p className="text-center" id="colour-picker-title">Block Colour</p>
-                        
-                        <div id="colour-picker" className="">
-                            <div className="cp-row">
-                               <div className="colour-container" onClick={handleTaskBg} tabIndex={0}></div>
-                               <div className="colour-container" onClick={handleTaskBg} tabIndex={0}></div>
-                               <div className="colour-container" onClick={handleTaskBg} tabIndex={0}></div>
-                               <div className="colour-container" onClick={handleTaskBg} tabIndex={0}></div>
-                            </div>
 
+                        <div id="colour-picker">
                             <div className="cp-row">
-                               <div className="colour-container" onClick={handleTaskBg} tabIndex={0}></div>
-                               <div className="colour-container" onClick={handleTaskBg} tabIndex={0}></div>
-                               <div className="colour-container" onClick={handleTaskBg} tabIndex={0}></div>
-                               <div className="colour-container" onClick={handleTaskBg} tabIndex={0}></div>
+                                {['#57d3ac', '#58d7d8', '#8da0cb', '#5461d8'].map((color, index) => (
+                                    <div key={index} className="colour-container" onClick={handleTaskBg} style={{ backgroundColor: color }} data-color={color} tabIndex={0}></div>
+                                ))}
+                            </div>
+                            <div className="cp-row">
+                                {['#6024c1', '#e7af46', '#c48255', '#b33c3c'].map((color, index) => (
+                                    <div key={index} className="colour-container" onClick={handleTaskBg} style={{ backgroundColor: color }} data-color={color} tabIndex={0}></div>
+                                ))}
                             </div>
                         </div>
+
                     </div>
                     
                     <div className="btn-wrapper py-3" id="new-task-btn-wrapper">
-                        <button onClick={handleClick} id="new-task-btn" >Add</button>
+                        <button onClick={handleClick} id="new-task-btn">Add</button>
                     </div>
 
                 </div>
@@ -248,7 +237,7 @@ function Schedule() {
                             return (
                                 <div className="task" key={index} 
                                 style={{gridRow: `${((parseInt(task.startHour) * 6 + parseInt(task.startMin)/10) + 1)}/span ${totalMins/10}`,
-                                zIndex: 2}}> 
+                                zIndex: 2, backgroundColor: task.colour}}> 
                                     <p className="task-desc">{task.desc}</p> 
                                     <p className="task-time">{task.start} - {task.end}</p>
                                 </div>
