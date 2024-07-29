@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import './schedule.css';
+import Modal from "../Modal";
 
 
     /* *************** Create Task Class  *************** */ 
@@ -37,8 +38,10 @@ function Schedule() {
     const [selectStartValue, setSelectStartValue] = useState('');
     const [selectEndValue, setSelectEndValue] = useState('');
     const [tasks, setTasks] = useState([]);
-    const [errDisplay, setErrDisplay] = useState('none'); 
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const [taskBg, setTaskBg] = useState('');
+    const [modalMsg, setModalMsg] = useState(0);
+    
 
     /* *************** Creates arrays of units of time to be used as time slots *************** */ 
 
@@ -92,7 +95,7 @@ function Schedule() {
 
     const handleClick = () => {
         let timeClash = false;
-        let errDisplay = 'block';
+        let modalMsg = 0;
         const currentTask = new Task(inputValue, selectStartValue, selectEndValue, taskBg);
         currentTask.setProperties();
 
@@ -110,15 +113,22 @@ function Schedule() {
                 (currentTaskStartMins <= newTaskStartMins && currentTaskEndMins>= newTaskEndMins) //New task completely covers existing task
             ) {
                 timeClash = true;
-                console.log('The sands of time have collided');
-                setErrDisplay('block');
+                setModalMsg(1);
+                setIsModalOpen(true);
+
             }
         });
+
+        if((parseInt(currentTask.startHour) * 60 + parseInt(currentTask.startMin)) >  (parseInt(currentTask.endHour) * 60 + parseInt(currentTask.endMin))){
+            timeClash = true;
+            setModalMsg(2);
+            setIsModalOpen(true);
+        }
         
-    
+        //Thanks for making everything difficult Mr.Zuckerberg
+        //Updates array if there's no time clash
         if(!timeClash){
             setTasks(prevTasks => [...prevTasks, currentTask]);
-            setErrDisplay('none');
         }
         
         // Clear input values
@@ -128,11 +138,20 @@ function Schedule() {
 
     };
 
+    const modalContent = (msg) => {
+        if (msg === 1) {
+            return <p className="py-3 px-3" id="error-text">This task clashes with a pre-existing task. Please choose a different time for your task.</p>
+        }
+        else if(msg === 2) {
+            return <p className="py-3 px-3" id="error-text">The end time cannot be before the start time</p>
+        }
+        return null;
+    }
+    
     useEffect(() => {
         console.log(tasks)
         console.log(`taskBg: ${taskBg}`);
     }, [tasks])
-
 
  
     /* *************** JS imported from test *************** */ 
@@ -151,7 +170,6 @@ function Schedule() {
         {/* *************** New task modal container *************** */}
 
             <div id="schedule-content">
-                
                 
                 <div id="new-task-container" className="py-1 px-3">
                     
@@ -246,6 +264,10 @@ function Schedule() {
                     </div>
                 </div>
             </div>
+
+            <Modal open={isModalOpen} onClose={() => setIsModalOpen(false)}>
+                {modalContent(modalMsg)}
+            </Modal>
             
         </>
     )

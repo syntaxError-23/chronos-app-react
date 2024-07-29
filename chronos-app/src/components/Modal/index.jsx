@@ -1,18 +1,29 @@
 import React from 'react'
 import ReactDom from 'react-dom'
+import '../Modal/modal.css'
 
- function Modal() {
+const mountElement = document.getElementById('portal');
+
   
-  return (
-   <>
-   <div id="error-wrapper" style={{ display: errDisplay }}>
-        <div id="error-msg">
-            <span id="error-close" onClick={() => setErrDisplay('none')}>X</span>
-            <p id="error-text">This task clashes with a pre-existing task. Please choose a different time for your task</p>
+  function Modal({ open, onClose, children }) {
+    if (!open) return null;
+  
+    return ReactDom.createPortal(
+      <div className='modal-overlay'>
+        <div className='modal-content'>
+          <div className="modal-banner">
+            <p className='px-2 py-0'>Error</p>
+            <span className='close-button px-2' onClick={onClose}>x</span>
+          </div>
+          {children}
         </div>
-    </div>
+      </div>,
+      mountElement
+    );
+  }
 
-   </>
-  )
-}
 export default Modal
+
+
+
+

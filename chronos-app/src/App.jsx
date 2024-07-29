@@ -6,13 +6,16 @@ import LoginPage from './pages/loginPage';
 import SchedulePage from './pages/SchedulePage'
 import TestPage from './pages/TestPage';
 import './pages/loginPage'
+import Modal from './components/Modal';
+
 
 function App() {
-
+  
   return (
     <>
+        <Modal />
         <Router>
-          <Switch>
+          <Switch> 
               <Route exact path="/" component={LandingPage} />
               <Route path="/login" component={LoginPage}/>
               <Route path="/signup" component={SignupPage} />
@@ -20,6 +23,8 @@ function App() {
               <Route path="/test" component={TestPage} />              
           </Switch>
         </Router>
+
+        
     </>
   )
 }
