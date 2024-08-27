@@ -14,9 +14,9 @@
     display: none;
   }
 
-  .link-btn-wrapper{
-    display: flex;
-    justify-content: center;
+  /* For some reason this style doesn't work in the global stylesheet */
+  button{
+    border-radius: 4px;
   }
   
   div#colour-filter{
@@ -34,6 +34,11 @@
   
   /* ========== Banner styles ========== */
 
+  a{
+    text-decoration: none;
+  }
+
+
   div#landing-banner{
     display: flex;
     justify-content: space-between;
@@ -46,11 +51,18 @@
     width: 25%;
   }
 
+
   .banner-text, #time-right-now{
-    font-size: 1.4em;
-    color: rgb(45, 8, 58);
+    color: rgba(0, 0, 0, 0.8);
     font-weight: 700;
+    font-size: 1.1em;
   }
+
+  #time-right-now{
+    font-size: 1.5rem;
+  }
+
+
   
   div#logo-wrapper{
     width: 100%;
@@ -74,3 +86,48 @@
     color: black
   }
   
+  /* ********************************************* Media queries ********************************************* */
+
+  /* *************** 320px - 768px *************** */
+
+  @media (min-width: 1px) and (max-width: 768px) {
+
+    .banner-text, #time-right-now{
+
+      font-size: 0.8em;
+    }
+
+  }
+
+  @media (max-width: 520px){
+
+    div#landing-banner{
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    div#date-time-container{
+      display: flex;
+      justify-content: center;
+      width: 100%;
+      margin: 5px;
+    }
+
+    div.banner-side-item{
+      width: 45%;
+    }
+    
+    div.time-container{
+      display: flex;
+      justify-content: flex-start;
+    }
+
+    div.date-container{
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    #time-right-now {
+      font-size: 1.2em;
+    }
+  }

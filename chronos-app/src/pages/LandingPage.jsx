@@ -8,13 +8,11 @@ function LandingPage() {
         <>
             <Landing>
                 <div id="tagline-wrapper">
-                        <h1 id="tagline" className="text-center my-5">FULL CONTROL AROUND THE CLOCK</h1>
+                    <h1 id="tagline" className="text-center my-5">FULL CONTROL AROUND THE CLOCK</h1>
                 </div>
+
                 <div className="link-btn-wrapper mb-5">
-                    <Link to='login'><button className="link-btn mx-1">Login</button></Link>
-                    <Link to='/signup'><button className="link-btn mx-1">Sign Up</button></Link>
                     <Link to='/schedule'><button className="link-btn mx-1">Schedule</button></Link>
-                    <Link to='/test'><button className="link-btn mx-1">Test</button></Link>
                 </div>
             </Landing>
         </>

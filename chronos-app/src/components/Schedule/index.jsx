@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import './schedule.css';
+import '../../index.css'
 import Modal from "../Modal";
 
 
@@ -24,23 +25,23 @@ import Modal from "../Modal";
             console.log(`this.endMin: ${this.endMin}`)
         }
 
-        calcTimeDiff() {
-            let hourDiff = parseInt(this.endHour) - parseInt(this.startHour);
-            console.log(`${hourDiff} hours`);
-            let minDiff = parseInt(this.endMin) - parseInt(this.startMin);
-            console.log(`${minDiff} mins`);
-        }
     }
 
+/* *************** useState variables *************** */ 
 
 function Schedule() {
     const [inputValue, setInputValue] = useState('');
     const [selectStartValue, setSelectStartValue] = useState('');
     const [selectEndValue, setSelectEndValue] = useState('');
-    const [tasks, setTasks] = useState([]);
+    const [tasks, setTasks] = useState(JSON.parse(localStorage.getItem('tasksArr')));
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [taskBg, setTaskBg] = useState('');
     const [modalMsg, setModalMsg] = useState(0);
+
+    /* *************** Saves tasks to local storage *************** */ 
+    useEffect(() => {
+        localStorage.setItem('tasksArr', JSON.stringify(tasks));
+    }, [tasks])
     
 
     /* *************** Creates arrays of units of time to be used as time slots *************** */ 
@@ -95,7 +96,6 @@ function Schedule() {
 
     const handleClick = () => {
         let timeClash = false;
-        let modalMsg = 0;
         const currentTask = new Task(inputValue, selectStartValue, selectEndValue, taskBg);
         currentTask.setProperties();
 
@@ -106,6 +106,7 @@ function Schedule() {
             const newTaskStartMins = parseInt(task.startHour) * 60 + parseInt(task.startMin);
             const newTaskEndMins = parseInt(task.endHour) * 60 + parseInt(task.endMin);
 
+            //Error handling conditionals
             // Check if the new task overlaps with any existing task
             if (
                 (currentTaskStartMins >= newTaskStartMins && currentTaskStartMins < newTaskEndMins) || //New task starts within existing task
@@ -115,7 +116,6 @@ function Schedule() {
                 timeClash = true;
                 setModalMsg(1);
                 setIsModalOpen(true);
-
             }
         });
 
@@ -124,6 +124,13 @@ function Schedule() {
             setModalMsg(2);
             setIsModalOpen(true);
         }
+
+        if(selectStartValue === '' || selectEndValue === ''){
+            timeClash = true;
+            setModalMsg(3);
+            setIsModalOpen(true);
+        }
+        
         
         //Thanks for making everything difficult Mr.Zuckerberg
         //Updates array if there's no time clash
@@ -145,16 +152,29 @@ function Schedule() {
         else if(msg === 2) {
             return <p className="py-3 px-3" id="error-text">The end time cannot be before the start time</p>
         }
+        else if(msg === 3){
+            return <p className="py-3 px-3" id="error-text">Please enter a start and end time</p>
+        }
         return null;
     }
     
+    const handleDelete = (event) => {
+        console.log('Delete button clicked');
+        const taskToDelete = event.target.parentNode.parentNode.parentNode;
+        const taskId = taskToDelete.dataset.listid;
+        console.log(taskId);
+
+        // setTasks(tasks.splice(taskId, 1))
+
+        setTasks(prevTasks => prevTasks.filter((_, index) => index !== parseInt(taskId)));
+    }
+
     useEffect(() => {
         console.log(tasks)
-        console.log(`taskBg: ${taskBg}`);
     }, [tasks])
 
- 
-    /* *************** JS imported from test *************** */ 
+
+  /* *************** Create hours for select dropdowns *************** */ 
         
     let hourArray = [];
 
@@ -174,16 +194,16 @@ function Schedule() {
                 <div id="new-task-container" className="py-1 px-3">
                     
                     <div className="new-task-div mt-3 mb-2" id="new-task-form">
-                        <label htmlFor="new-task" className="schedule-input-label form-label">Task:</label>
-                        <input onChange={handleInputChange} value={inputValue} type="text" id="new-task-input" name="new-task" className="form-control" placeholder="Enter a task here"/>
+                        <label htmlFor="new-task" className="schedule-input-label form-label">Task</label>
+                        <input onChange={handleInputChange} value={inputValue} type="text" id="new-task-input" name="new-task" className="form-control all-forms" placeholder="Enter a task here"/>
                     </div>
                     
                     <div className="new-task-div" id="schedule-dropdowns">
                         
                         <div id="dropdown-1" className="dropdown-container mb-2">
-                            <label htmlFor="duration" className="schedule-input-label form-label" >Start:</label>
-                            <select onChange={handleSelectStart} value={selectStartValue} name="duration" id="new-task-duration" className="form-select">
-                                <option value="prompt">Please select a time</option>  {/**/}
+                            <label htmlFor="duration" className="schedule-input-label form-label" >Start</label>
+                            <select onChange={handleSelectStart} value={selectStartValue} name="duration" id="new-task-duration" className="form-select all-forms">
+                                <option value="prompt">Please select a start time</option>  {/**/}
                                 {combinedSlotsArr.map((slot, index) => (
                                     <option key={index} value={slot}>{slot}</option>
                                 ))}
@@ -191,9 +211,9 @@ function Schedule() {
                         </div>
                         
                         <div id="dropdown-2" className="dropdown-container">
-                            <label htmlFor="duration" className="schedule-input-label form-label" >End:</label>
-                            <select onChange={handleSelectEnd} value={selectEndValue}name="duration" id="new-task-duration" className="form-select">
-                                <option value="prompt">Please select a time</option>
+                            <label htmlFor="duration" className="schedule-input-label form-label" >End</label>
+                            <select onChange={handleSelectEnd} value={selectEndValue}name="duration" id="new-task-duration" className="form-select all-forms">
+                                <option value="prompt">Please select an end time</option>
                                 {combinedSlotsArr.map((slot, index) => (
                                     <option key={index} value={slot}>{slot}</option>
                                 ))}
@@ -202,7 +222,7 @@ function Schedule() {
 
                     </div>
 
-                    <div id="colour-picker-container" className="my-4">
+                    <div id="colour-picker-container" className="my-3">
                         
                         <p className="text-center" id="colour-picker-title">Block Colour</p>
 
@@ -221,7 +241,7 @@ function Schedule() {
 
                     </div>
                     
-                    <div className="btn-wrapper py-3" id="new-task-btn-wrapper">
+                    <div className="btn-wrapper py-3 link-btn-wrapper" id="new-task-btn-wrapper">
                         <button onClick={handleClick} id="new-task-btn">Add</button>
                     </div>
 
@@ -253,11 +273,19 @@ function Schedule() {
                             const taskDuration = (parseInt(task.endHour) * 60 + parseInt(task.endMin)) - (parseInt(task.startHour) * 60 + parseInt(task.startMin));
 
                             return (
-                                <div className="task" key={index} 
+                                <div className="task" key={index} data-listid={index} 
                                 style={{gridRow: `${((parseInt(task.startHour) * 6 + parseInt(task.startMin)/10) + 1)}/span ${totalMins/10}`,
                                 zIndex: 2, backgroundColor: task.colour}}> 
-                                    <p className="task-desc">{task.desc}</p> 
-                                    <p className="task-time">{task.start} - {task.end}</p>
+                                    <div className="task-content-container">
+                                        <div className="task-buttons">
+                                            <p className="edit-btn">Edit</p>
+                                            <span className="close-btn" onClick={handleDelete}>x</span>
+                                        </div>
+                                        <div className="task-content">
+                                            <p className="task-desc">{task.desc}</p> 
+                                            <p className="task-time">{task.start} - {task.end}</p>
+                                        </div>
+                                    </div>
                                 </div>
                             )
                         })}
