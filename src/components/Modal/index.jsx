@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDom from 'react-dom'
-import '../Modal/modal.css'
+import './modal.css'
 
 const mountElement = document.getElementById('portal');
 

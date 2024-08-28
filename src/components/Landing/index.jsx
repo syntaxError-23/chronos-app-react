@@ -105,6 +105,8 @@ function Landing({children}){
                 </div>
             </div>
         </div>
+
+        <p>hello</p>
     </>
     )
 }

@@ -4,6 +4,7 @@ import Landing from '../components/Landing'
 
 
 function LandingPage() {
+    console.log('hello from landingPage');
     return(
         <>
             <Landing>
