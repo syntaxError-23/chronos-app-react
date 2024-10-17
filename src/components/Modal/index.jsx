@@ -4,7 +4,6 @@ import './modal.css'
 
 const mountElement = document.getElementById('portal');
 
-  
   function Modal({ open, onClose, children }) {
     if (!open) return null;
   
